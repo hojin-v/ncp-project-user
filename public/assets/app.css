@@ -442,6 +442,11 @@ textarea:focus {
   padding: 0 12px;
 }
 
+/* [hidden] 속성이 .inline-form 등의 display 규칙에 덮이지 않도록 보장(수정/삭제 폼 기본 숨김) */
+[hidden] {
+  display: none !important;
+}
+
 .inline-form {
   display: grid;
   gap: 8px;
