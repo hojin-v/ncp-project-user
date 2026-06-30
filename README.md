@@ -6,9 +6,9 @@
 
 ## 구조
 ```
-src/    config.php(시크릿 로더) · db.php(PDO) · weather.php(data.go.kr API/DB 저장)
+src/    config.php(시크릿 로더) · db.php(PDO) · weather.php(data.go.kr API/DB 저장) · comments.php(댓글 CRUD)
 public/ 웹 docroot (→ /var/www/html 로 배포). health.php, index.php(메인), api/
-bin/    healthcheck.php (CLI: DB 점검) · fetch_weather.php(날씨 수집)
+bin/    healthcheck.php (CLI: DB 점검) · fetch_weather.php(날씨 수집) · comments_smoke.php(댓글 CRUD 검증)
 sql/    DB 테이블 DDL
 ```
 
@@ -20,6 +20,7 @@ litellm 키는 user-web에서 불필요.
 ```
 php bin/healthcheck.php   # [DB] OK
 php bin/fetch_weather.php # 서울/부산/제주 날씨 API 호출→DB 저장
+php bin/comments_smoke.php # 댓글 작성→조회→수정→삭제 라운드트립
 ```
 
 ## 배포 (나중에)
