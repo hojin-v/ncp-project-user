@@ -1,0 +1,6 @@
+# 시크릿은 repo 밖(/var/www/weather-app-config/config.php)에 둠. 혹시 모를 로컬 파일 차단.
+*.env
+config.local.php
+secret*.php
+*.log
+.DS_Store
