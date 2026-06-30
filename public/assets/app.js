@@ -16,6 +16,7 @@ const el = {
   feelsLike: document.querySelector('#feelsLike'),
   forecastCount: document.querySelector('#forecastCount'),
   forecastList: document.querySelector('#forecastList'),
+  commentTitle: document.querySelector('#commentTitle'),
   weatherSnapshot: document.querySelector('#weatherSnapshot'),
   commentForm: document.querySelector('#commentForm'),
   formStatus: document.querySelector('#formStatus'),
