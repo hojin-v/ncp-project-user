@@ -2,5 +2,9 @@
 *.env
 config.local.php
 secret*.php
+config.php
+weather-app-config.php
+*.pem
+*.key
 *.log
 .DS_Store
