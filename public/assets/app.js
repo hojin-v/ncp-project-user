@@ -7,11 +7,13 @@ const el = {
   cityTabs: document.querySelector('#cityTabs'),
   cityName: document.querySelector('#cityName'),
   weatherSummary: document.querySelector('#weatherSummary'),
+  weatherSubline: document.querySelector('#weatherSubline'),
+  weatherIcon: document.querySelector('#weatherIcon'),
   temperature: document.querySelector('#temperature'),
   humidity: document.querySelector('#humidity'),
   wind: document.querySelector('#wind'),
   rain: document.querySelector('#rain'),
-  observedAt: document.querySelector('#observedAt'),
+  feelsLike: document.querySelector('#feelsLike'),
   forecastCount: document.querySelector('#forecastCount'),
   forecastList: document.querySelector('#forecastList'),
   weatherSnapshot: document.querySelector('#weatherSnapshot'),
@@ -48,23 +50,27 @@ function renderCityTabs(cities, selected) {
 }
 
 function renderWeather(current, forecast) {
-  el.cityName.textContent = current.city_name;
-  el.weatherSummary.textContent = current.summary;
+  const condition = current.precipitation_type_name === '없음' ? forecast[0]?.condition || '맑음' : current.precipitation_type_name;
+  el.cityName.textContent = `${current.city_name}, 대한민국`;
+  el.weatherSummary.textContent = condition;
+  el.weatherSubline.textContent = `체감 ${valueOrDash(current.temperature_c)}°C · 기준 ${formatDateTime(current.observed_at)}`;
+  el.weatherIcon.textContent = weatherIcon(condition);
   el.temperature.textContent = valueOrDash(current.temperature_c);
   el.humidity.textContent = current.humidity_percent === null ? '-' : `${current.humidity_percent}%`;
   el.wind.textContent = current.wind_speed_ms === null ? '-' : `${current.wind_speed_ms} m/s`;
-  el.rain.textContent = current.precipitation_type_name || '-';
-  el.observedAt.textContent = formatDateTime(current.observed_at);
+  el.rain.textContent = current.precipitation_1h || current.precipitation_type_name || '-';
+  el.feelsLike.textContent = current.temperature_c === null ? '-' : `${valueOrDash(current.temperature_c)}°`;
   el.weatherSnapshot.value = current.summary;
-  el.forecastCount.textContent = `${forecast.length}일`;
+  el.forecastCount.textContent = '7일 전체 보기⌄';
+  el.commentTitle.textContent = `${current.city_name} 댓글`;
 
-  el.forecastList.replaceChildren(...forecast.map((day) => {
+  el.forecastList.replaceChildren(...forecast.map((day, index) => {
     const card = document.createElement('article');
     card.className = 'forecast-card';
     card.innerHTML = `
-      <span>${escapeHtml(day.label)}</span>
+      <span>${escapeHtml(dayLabel(day.label, index))}</span>
+      <em aria-hidden="true">${weatherIcon(day.condition || '')}</em>
       <strong>${valueOrDash(day.temp_max_c)}° / ${valueOrDash(day.temp_min_c)}°</strong>
-      <span class="condition">${escapeHtml(day.condition || '-')}</span>
       <span>강수 ${day.precipitation_probability_percent ?? '-'}%</span>
     `;
     return card;
@@ -189,6 +195,20 @@ function valueOrDash(value) {
     return '-';
   }
   return Number.isInteger(value) ? String(value) : String(Number(value).toFixed(1)).replace(/\.0$/, '');
+}
+
+function weatherIcon(condition) {
+  if (condition.includes('눈')) return '🌨️';
+  if (condition.includes('비')) return '🌧️';
+  if (condition.includes('흐림')) return '☁️';
+  if (condition.includes('구름')) return '⛅';
+  return '☀️';
+}
+
+function dayLabel(label, index) {
+  if (index === 0) return '오늘';
+  if (index === 1) return '내일';
+  return label.split(' ').pop() || label;
 }
 
 function formatDateTime(value) {

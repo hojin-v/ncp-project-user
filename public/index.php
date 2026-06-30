@@ -12,43 +12,41 @@ declare(strict_types=1);
 <body>
   <div class="app-shell">
     <header class="app-header">
-      <div>
-        <p class="eyebrow">Weather Board</p>
-        <h1>날씨 & 댓글</h1>
-      </div>
+      <h1><span aria-hidden="true">🌥️</span> 날씨 & 댓글</h1>
       <nav class="city-tabs" id="cityTabs" aria-label="도시 선택"></nav>
     </header>
 
     <main class="layout">
       <section class="weather-panel" aria-labelledby="weatherTitle">
         <div class="weather-card">
-          <div class="weather-main">
+          <p class="location" id="weatherTitle">⌖ <span id="cityName">-</span></p>
+          <div class="temperature-row">
             <div>
-              <p class="section-label" id="weatherTitle">현재 날씨</p>
-              <h2 id="cityName">-</h2>
+              <div class="temperature">
+                <span id="temperature">--</span><small>°</small>
+              </div>
               <p class="weather-summary" id="weatherSummary">-</p>
+              <p class="weather-subline" id="weatherSubline">-</p>
             </div>
-            <div class="temperature">
-              <span id="temperature">--</span><small>°C</small>
-            </div>
+            <div class="weather-icon" id="weatherIcon" aria-hidden="true">⛅</div>
           </div>
 
           <div class="metric-grid">
             <div class="metric">
-              <span>습도</span>
+              <span>⌁ 습도</span>
               <strong id="humidity">-</strong>
             </div>
             <div class="metric">
-              <span>풍속</span>
+              <span>↝ 풍속</span>
               <strong id="wind">-</strong>
             </div>
             <div class="metric">
-              <span>강수</span>
+              <span>☔ 강수</span>
               <strong id="rain">-</strong>
             </div>
             <div class="metric">
-              <span>기준</span>
-              <strong id="observedAt">-</strong>
+              <span>↟ 체감</span>
+              <strong id="feelsLike">-</strong>
             </div>
           </div>
         </div>
@@ -65,8 +63,7 @@ declare(strict_types=1);
       <section class="comment-panel" aria-labelledby="commentTitle">
         <div class="comment-head">
           <div>
-            <p class="section-label">댓글</p>
-            <h2 id="commentTitle">오늘의 기록</h2>
+            <h2 id="commentTitle">댓글</h2>
           </div>
           <span class="count-pill" id="commentCount">0</span>
         </div>
@@ -75,27 +72,29 @@ declare(strict_types=1);
           <div class="form-grid">
             <label>
               <span>닉네임</span>
-              <input name="nickname" maxlength="50" autocomplete="nickname" required>
+              <input name="nickname" maxlength="50" autocomplete="nickname" placeholder="ex) 날씨요정" required>
             </label>
             <label>
               <span>비밀번호</span>
-              <input name="password" type="password" minlength="4" autocomplete="new-password" required>
+              <input name="password" type="password" minlength="4" autocomplete="new-password" placeholder="••••" required>
             </label>
           </div>
           <label>
             <span>내용</span>
-            <textarea name="content" rows="4" maxlength="1000" required></textarea>
+            <textarea name="content" rows="4" maxlength="1000" placeholder="서울 날씨 어때요?" required></textarea>
           </label>
           <input type="hidden" name="weather_snapshot" id="weatherSnapshot">
           <div class="form-actions">
             <p class="form-status" id="formStatus" role="status"></p>
-            <button type="submit">남기기</button>
+            <button type="submit">✈ 남기기</button>
           </div>
         </form>
 
         <div class="comment-list" id="commentList"></div>
       </section>
     </main>
+
+    <footer class="app-footer">공공데이터 기반 날씨 · 댓글은 서버 DB에 저장됩니다</footer>
   </div>
 
   <template id="commentTemplate">
