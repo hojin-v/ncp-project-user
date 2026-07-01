@@ -1,5 +1,12 @@
 <?php
 declare(strict_types=1);
+// 이 요청을 처리한 서버 식별(호스트명 + 사설 IP). 로드밸런서 분산을 새로고침으로 확인하기 위한 표시.
+$serverHost = gethostname() ?: php_uname('n');
+$serverAddr = $_SERVER['SERVER_ADDR'] ?? '';
+if ($serverAddr === '') {
+    $resolved = @gethostbyname($serverHost);
+    $serverAddr = ($resolved !== $serverHost) ? $resolved : 'unknown';
+}
 ?><!doctype html>
 <html lang="ko">
 <head>
@@ -11,6 +18,11 @@ declare(strict_types=1);
 </head>
 <body>
   <div class="app-shell">
+    <div class="server-badge" title="이 페이지를 응답한 서버입니다. 새로고침하면 로드밸런서가 다른 서버로 분산하는지 확인할 수 있습니다.">
+      <span class="server-dot" aria-hidden="true"></span>
+      served by <strong><?= htmlspecialchars($serverHost, ENT_QUOTES) ?></strong>
+      <span class="server-ip"><?= htmlspecialchars($serverAddr, ENT_QUOTES) ?></span>
+    </div>
     <header class="app-header">
       <h1><span aria-hidden="true">🌥️</span> 날씨 & 댓글</h1>
       <nav class="city-tabs" id="cityTabs" aria-label="도시 선택"></nav>
