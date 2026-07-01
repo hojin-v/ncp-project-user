@@ -289,8 +289,8 @@ h2 {
 
 .forecast-list {
   display: grid;
-  grid-template-columns: repeat(5, 76px);
-  gap: 9px;
+  grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+  gap: 10px;
   align-items: stretch;
 }
 
@@ -299,11 +299,12 @@ h2 {
   justify-items: center;
   align-content: center;
   gap: 6px;
-  min-height: 118px;
+  min-height: 128px;
   padding: 12px 8px;
   border: 1px solid transparent;
   border-radius: 14px;
   background: #17233a;
+  text-align: center;
 }
 
 .forecast-card:first-child {
@@ -324,6 +325,32 @@ h2 {
 .forecast-card strong {
   color: #ffffff;
   font-size: 1.02rem;
+}
+
+.forecast-card small {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(90, 167, 255, 0.14);
+  color: #9cc9ff;
+  font-size: 0.72rem;
+  font-weight: 720;
+}
+
+.forecast-card.is-partial {
+  border-color: rgba(90, 167, 255, 0.34);
+}
+
+.forecast-empty {
+  min-height: 118px;
+  display: grid;
+  place-items: center;
+  border: 1px dashed rgba(70, 102, 146, 0.8);
+  border-radius: 14px;
+  color: var(--muted);
+  text-align: center;
 }
 
 .comment-panel {
@@ -555,8 +582,7 @@ textarea:focus {
   }
 
   .forecast-list {
-    grid-template-columns: repeat(5, minmax(64px, 1fr));
-    overflow-x: auto;
+    grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
   }
 }
 

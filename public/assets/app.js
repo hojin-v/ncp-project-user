@@ -62,17 +62,29 @@ function renderWeather(current, forecast) {
   el.rain.textContent = current.precipitation_1h || current.precipitation_type_name || '-';
   el.feelsLike.textContent = current.temperature_c === null ? '-' : `${valueOrDash(current.temperature_c)}°`;
   el.weatherSnapshot.value = current.summary;
-  el.forecastCount.textContent = '7일 전체 보기⌄';
+  el.forecastCount.textContent = forecast.length === 0 ? '예보 없음' : `${forecast.length}일 예보`;
   el.commentTitle.textContent = `${current.city_name} 댓글`;
+
+  if (forecast.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'forecast-empty';
+    empty.textContent = '예보 데이터가 없습니다.';
+    el.forecastList.replaceChildren(empty);
+    return;
+  }
 
   el.forecastList.replaceChildren(...forecast.map((day, index) => {
     const card = document.createElement('article');
     card.className = 'forecast-card';
+    if ((day.hours ?? 0) > 0 && day.hours < 12) {
+      card.classList.add('is-partial');
+    }
     card.innerHTML = `
       <span>${escapeHtml(dayLabel(day.label, index))}</span>
       <em aria-hidden="true">${weatherIcon(day.condition || '')}</em>
-      <strong>${valueOrDash(day.temp_max_c)}° / ${valueOrDash(day.temp_min_c)}°</strong>
-      <span>강수 ${day.precipitation_probability_percent ?? '-'}%</span>
+      <strong>${escapeHtml(formatTempRange(day))}</strong>
+      <span>${escapeHtml(formatRainProbability(day.precipitation_probability_percent))}</span>
+      ${card.classList.contains('is-partial') ? '<small>일부 시간</small>' : ''}
     `;
     return card;
   }));
@@ -196,6 +208,22 @@ function valueOrDash(value) {
     return '-';
   }
   return Number.isInteger(value) ? String(value) : String(Number(value).toFixed(1)).replace(/\.0$/, '');
+}
+
+function formatTempRange(day) {
+  const max = valueOrDash(day.temp_max_c);
+  const min = valueOrDash(day.temp_min_c);
+  if (max === '-' && min === '-') {
+    return '기온 정보 없음';
+  }
+  if (max === min) {
+    return `${max}°`;
+  }
+  return `${max}° / ${min}°`;
+}
+
+function formatRainProbability(value) {
+  return value === null || value === undefined ? '강수 정보 없음' : `강수 ${value}%`;
 }
 
 function weatherIcon(condition) {
