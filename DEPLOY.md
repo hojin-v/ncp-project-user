@@ -46,10 +46,11 @@ sudo chmod 640 /var/www/weather-app-config/config.php
 
 |키|설명|
 |---|---|
+|`db.host`|Cloud DB for MySQL 사설 엔드포인트(콘솔에서 확인)|
 |`db.password`|`weather_user` DB 비밀번호|
 |`weather.service_key`|data.go.kr 기상청 단기예보 서비스키|
 
-DB host/user/name은 템플릿 기본값을 유지한다.
+`db.user`/`db.database`/`db.charset`은 템플릿 기본값을 유지하고, `db.host`는 실제 사설 엔드포인트로 채운다.
 
 ## 4. 배포
 
@@ -112,7 +113,7 @@ sudo crontab -e
 |증상|확인|
 |---|---|
 |`config not readable`|`/var/www/weather-app-config/config.php` 존재/권한 확인|
-|DB 접속 실패|DB ACG가 `acg-user-web` 또는 `<USER_SUBNET>` 3306 허용인지 확인|
+|DB 접속 실패|DB ACG가 `acg-user-web`(user 서버 ACG) 3306 허용인지 확인|
 |날씨 API 실패|서비스키, NAT outbound 443, data.go.kr 호출 제한 확인|
 |ALB 502/헬스 실패|`/health.php` 200, Target Group health check path 확인|
 

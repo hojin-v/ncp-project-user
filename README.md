@@ -6,11 +6,7 @@
 
 ## 먼저 읽기
 
-Codex로 이어 작업할 때:
-
-```text
-CLAUDE.md → DEPLOY.md → docs/PROJECT_CONTEXT.md → README.md
-```
+배포/운영 절차는 `DEPLOY.md` 참조.
 
 ## 구조
 ```
@@ -18,7 +14,6 @@ src/    config.php(시크릿 로더) · db.php(PDO) · weather.php(data.go.kr AP
 public/ 웹 docroot (→ /var/www/html 로 배포). index.php(메인), health.php, api/, assets/
 bin/    healthcheck.php (CLI: DB 점검) · fetch_weather.php(날씨 수집) · comments_smoke.php(댓글 CRUD 검증)
 sql/    DB 테이블 DDL
-docs/   인수인계/DB 접속 참고
 ```
 
 ## 시크릿 (repo 밖)
